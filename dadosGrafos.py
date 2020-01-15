@@ -119,6 +119,3 @@ for a in range (2003, 2020):
 	plt.title("mean entropy " + ano)
 	plt.savefig("GraficosAno/" + ano + "/mean_entropy", dpi = 600)
 	plt.close()
-
-''' criacao do dataframe com coordenadas de cada vertice '''
-
