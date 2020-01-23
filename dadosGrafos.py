@@ -1,9 +1,34 @@
 # -*- coding: utf-8 -*-
 import os
 import re
+import math
 import pandas as pd
 from igraph import Graph
 import matplotlib.pyplot as plt
+
+# conta quantos elementos k tem na lista l
+def countLista(l, k):
+    count = 0
+    for i in l:
+        if i == k:
+            count += 1
+    return count
+
+# probabilidade de escolher aleatoriamente um vertice com grau k no grafo g
+def probGrau(g, k):
+    return countLista(g.degree(), k)/g.vcount()
+
+# entropia do grafo
+def entropia(g):
+    N = g.vcount()
+    graus = g.degree()
+    grauMax = max(graus)
+    H = 0
+    for i in range (grauMax + 1):
+        p = probGrau(g, i)
+        if p > 0:
+            H += p * math.log10(p)/math.log10(N)
+    return -H
 
 # retorna a soma de todos os elementos de uma lista
 def somaLista(l):
@@ -30,7 +55,7 @@ dados = {
 	'mean_degree' : [],
 	'mean_betweenness' : [],
 	'mean_closeness' : [],
-	'mean_entropy' : []
+	'entropy' : []
 }
 
 ''' leitura dos arquivos e criacao do dataframe '''
@@ -49,31 +74,27 @@ for arquivo in f: # percorre todos os grafos mensais em ordem
 	
 	# abre o grafo
 	g = Graph.Read_GML("grafosMes/" + arquivo)
-	# pega o maior componente conexo
-	largest = g.clusters().giant()
-	del g
 	
 	# calculo e armazenamento do grau medio
-	listaDado = largest.degree()
+	listaDado = g.degree()
 	dado = somaLista(listaDado)/len(listaDado)
 	dados['mean_degree'].append(dado)
 	
 	# calculo e armazenamento da betweenness media
-	listaDado = largest.betweenness()
+	listaDado = g.betweenness()
 	dado = somaLista(listaDado)/len(listaDado)
 	dados['mean_betweenness'].append(dado)
 	
 	# calculo e armazenamento da closeness media
-	listaDado = largest.closeness()
+	listaDado = g.closeness()
 	dado = somaLista(listaDado)/len(listaDado)
 	dados['mean_closeness'].append(dado)
 	
-	# calculo e armazenamento da entropia normalizada media
-	listaDado = largest.diversity()
-	dado = somaLista(listaDado)/len(listaDado)
-	dados['mean_entropy'].append(dado)
+	# calculo e armazenamento da entropia normalizada
+	dado = entropia(g)
+	dados['entropy'].append(dado)
 	
-	del largest
+	del g
 	
 # cria um dataframe com os dados do dicionario
 dadosGrafos = pd.DataFrame(dados)
@@ -94,7 +115,7 @@ for a in range (2003, 2020):
 	mean_degree = [a for a in dadosAno['mean_degree']]
 	mean_betweenness = [a for a in dadosAno['mean_betweenness']]
 	mean_closeness = [a for a in dadosAno['mean_closeness']]
-	mean_entropy = [a for a in dadosAno['mean_entropy']]
+	entropy = [a for a in dadosAno['entropy']]
 	
 	# plot degree
 	plt.plot(m, mean_degree)
@@ -115,7 +136,9 @@ for a in range (2003, 2020):
 	plt.close()
 	
 	# plot entropy
-	plt.plot(m, mean_entropy)
+	plt.plot(m, entropy)
 	plt.title("mean entropy " + ano)
-	plt.savefig("GraficosAno/" + ano + "/mean_entropy", dpi = 600)
+	plt.savefig("GraficosAno/" + ano + "/entropy", dpi = 600)
 	plt.close()
+
+
