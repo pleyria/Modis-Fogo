@@ -34,7 +34,6 @@ plt.tick_params(
     bottom = False
 )
 plt.rc('xtick', labelsize = 10)
-plt.title("Mean Degree")
 plt.grid()
 plt.savefig(r'Graficos2003-2019/4Medidas', dpi = 600, bbox_inches='tight')
 plt.close()
