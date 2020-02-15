@@ -55,7 +55,9 @@ dados = {
 	'mean_degree' : [],
 	'mean_betweenness' : [],
 	'mean_closeness' : [],
-	'entropy' : []
+	'entropy' : [],
+     'n_vertices' : [],
+     'n_arestas' : []
 }
 
 ''' leitura dos arquivos e criacao do dataframe '''
@@ -64,37 +66,49 @@ f = os.listdir("grafosMes") # lista com os nomes dos grafos
 f = ordenaNomesArquivos(f) # ordena os nomes cronologicamente
 
 for arquivo in f: # percorre todos os grafos mensais em ordem
-	# guarda o ano do grafo
-	A = substringEntreChars(arquivo, '-', '.')
-	dados['ano'].append(A)
-	
-	# guarda o mes do grafo
-	M = substringEntreChars(arquivo, '_', '-')
-	dados['mes'].append(M) # guarda mes do grafo
-	
-	# abre o grafo
-	g = Graph.Read_GML("grafosMes/" + arquivo)
-	
-	# calculo e armazenamento do grau medio
-	listaDado = g.degree()
-	dado = somaLista(listaDado)/len(listaDado)
-	dados['mean_degree'].append(dado)
-	
-	# calculo e armazenamento da betweenness media
-	listaDado = g.betweenness()
-	dado = somaLista(listaDado)/len(listaDado)
-	dados['mean_betweenness'].append(dado)
-	
-	# calculo e armazenamento da closeness media
-	listaDado = g.closeness()
-	dado = somaLista(listaDado)/len(listaDado)
-	dados['mean_closeness'].append(dado)
-	
-	# calculo e armazenamento da entropia normalizada
-	dado = entropia(g)
-	dados['entropy'].append(dado)
-	
-	del g
+    # guarda o ano do grafo
+    A = substringEntreChars(arquivo, '-', '.')
+    dados['ano'].append(A)
+    
+    # guarda o mes do grafo
+    M = substringEntreChars(arquivo, '_', '-')
+    dados['mes'].append(M) # guarda mes do grafo
+    
+    # abre o grafo
+    g = Graph.Read_GML("grafosMes/" + arquivo)
+    
+    # calculo e armazenamento do grau medio
+    listaDado = g.degree()
+    dado = somaLista(listaDado)/len(listaDado)
+    dados['mean_degree'].append(dado)
+
+    # calculo e armazenamento da betweenness media
+    listaDado = g.betweenness()
+    dado = somaLista(listaDado)/len(listaDado)
+    dados['mean_betweenness'].append(dado)
+
+    # calculo e armazenamento da closeness media
+    listaDado = g.closeness()
+    dado = somaLista(listaDado)/len(listaDado)
+    dados['mean_closeness'].append(dado)
+
+    # calculo e armazenamento da entropia normalizada
+    dado = entropia(g)
+    dados['entropy'].append(dado)
+
+    # calculo e armazenamento do numero de vertices
+    v = g.degree()
+    dado = 0
+    for i in v:
+        if i > 0:
+            dado += 1
+    dados['n_vertices'].append(dado)
+    
+    # calculo e armazenamento do numero de arestas
+    dado = g.ecount()
+    dados['n_arestas'].append(dado)
+    
+    del g
 	
 # cria um dataframe com os dados do dicionario
 dadosGrafos = pd.DataFrame(dados)
@@ -137,7 +151,7 @@ for a in range (2003, 2020):
 	
 	# plot entropy
 	plt.plot(m, entropy)
-	plt.title("mean entropy " + ano)
+	plt.title("entropy " + ano)
 	plt.savefig("GraficosAno/" + ano + "/entropy", dpi = 600)
 	plt.close()
 
