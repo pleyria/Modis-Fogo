@@ -18,6 +18,8 @@ mean_degree = [a for a in df['mean_degree']]
 mean_betweenness = [a for a in df['mean_betweenness']]
 mean_closeness = [a for a in df['mean_closeness']]
 entropy = [a for a in df['entropy']]
+vertices = [a for a in df['n_vertices']]
+arestas = [a for a in df['n_arestas']]
 
 # plot mean degree, mean betweenness, mean closeness, entropy
 fig = plt.figure(figsize=(10,3))
@@ -105,3 +107,37 @@ plt.grid()
 plt.savefig(r'Graficos2003-2019/entropy', dpi = 600, bbox_inches='tight')
 plt.close()
 del entropy
+
+# plot vertices
+fig = plt.figure(figsize=(10,3))
+plt.xticks(np.arange(0, 204, step = 12), anos)
+plt.plot(vertices)
+plt.tick_params(
+    axis = 'x',
+    which = 'both',
+    top = False,
+    bottom = False
+)
+plt.rc('xtick', labelsize = 10)
+plt.title("Vertices")
+plt.grid()
+plt.savefig(r'Graficos2003-2019/vertices', dpi = 600, bbox_inches='tight')
+plt.close()
+del vertices
+
+# plot arestas
+fig = plt.figure(figsize=(10,3))
+plt.xticks(np.arange(0, 204, step = 12), anos)
+plt.plot(arestas)
+plt.tick_params(
+    axis = 'x',
+    which = 'both',
+    top = False,
+    bottom = False
+)
+plt.rc('xtick', labelsize = 10)
+plt.title("Arestas")
+plt.grid()
+plt.savefig(r'Graficos2003-2019/arestas', dpi = 600, bbox_inches='tight')
+plt.close()
+del arestas
