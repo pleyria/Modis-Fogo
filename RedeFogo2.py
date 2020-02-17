@@ -1,21 +1,19 @@
 # -*- coding: utf-8 -*-
 ''' Neste codigo, sao criadas redes para cada mes '''
 import math
-import numpy as np
 import pandas as pd
-from igraph import *
 from igraph import Graph
 
 ''' leitura dos arquivos '''
 
 # fire_nrt_M6_94041.csv contem dados de 2019-10-01 ate 2019-12-01
-df = pd.read_csv(r'csv\fire_archive_M6_94041.csv')
+df = pd.read_csv(r'csv/fire_archive_M6_94041.csv')
 # eventos1 contem apenas os dados com confiabilidade maior ou igual a 75%
 eventos1 = df.loc[df['confidence'] >= 75]
 del df
 
 # fire_archive_M6_94041.csv contem dados de 2003-01-01 ate 2019-09-30
-df = pd.read_csv(r'csv\fire_nrt_M6_94041.csv')
+df = pd.read_csv(r'csv/fire_nrt_M6_94041.csv')
 # eventos2 contem apenas os dados com confiabilidade maior ou igual a 75%
 eventos2 = df.loc[df['confidence'] >= 75]
 del df
@@ -90,7 +88,7 @@ for index_label, row_series in eventos.iterrows():
 nomesVertices = []
 for i in range(n):
     for j in range(n):
-        nome = str(i) + ',' + str(j)
+        nome = str(j) + ',' + str(i)
         nomesVertices.append(nome)
 		
 # listas para longitude a latitude do centro de cada celula baseado no seu nome
@@ -113,18 +111,18 @@ del eventos
 
 # dicionario com nome de meses
 meses = {
-	"01" : "Jan",
+    "01" : "Jan",
     "02" : "Fev",
     "03" : "Mar",
-	"04" : "Abr",
-	"05" : "Mai",
-	"06" : "Jun",
-	"07" : "Jul",
-	"08" : "Ago",
-	"09" : "Set",
-	"10" : "Out",
-	"11" : "Nov",
-	"12" : "Dez"
+    "04" : "Abr",
+    "05" : "Mai",
+    "06" : "Jun",
+    "07" : "Jul",
+    "08" : "Ago",
+    "09" : "Set",
+    "10" : "Out",
+    "11" : "Nov",
+    "12" : "Dez"
 }
 
 def mes(m):

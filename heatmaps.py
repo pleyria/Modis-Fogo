@@ -14,19 +14,28 @@ def ordenaNomesArquivos(f):
 	alphanum_key = lambda key: [convert(c) for c in re.split('([0-9]+)', key)]
 	return sorted(f, key = alphanum_key)
 
+# transforma uma lista 2d em 1d
+def total2d(v):
+    # V e uma copia de v
+    V = []
+    for i in v:
+        V.append(i.copy())
+
+    total = []
+    for i in v:
+        for j in i:
+            total.append(j)
+    del V
+    return total
+
 # normaliza uma lista 2d com o zscore aplicado em cada sublista
-def zscore2d(v):
+def zscore2d(v, total):
     # V e uma copia de v
     V = []
     for i in v:
         V.append(i.copy())
         
-    total = []
-    for i in V:
-        for j in i:
-            total.append(j)
     z = scipy.stats.zscore(total)
-    del total
     
     c = 0
     for i in V:
@@ -36,20 +45,15 @@ def zscore2d(v):
     return V
 
 # normaliza uma lista 2d com a equacao do min max aplicada em cada sublista
-def minMax2d(v):
+def minMax2d(v, total):
     # V e uma copia de v
     V = []
     for i in v:
         V.append(i.copy())
     
-    total = []
-    for i in V:
-        for j in i:
-            total.append(j)
     M = max(total)
     m = min(total)
     d = M - m
-    del total
     
     for i in V:
         for j in range(len(i)):
@@ -68,6 +72,7 @@ def sqrt2d(v):
             i[j] = math.sqrt(i[j])
     return V
 
+# normaliza uma lista 2d com logaritmo
 def log2d(v):
     # V e uma copia de v
     V = []
@@ -102,16 +107,24 @@ for arquivo in f:
 del f
 
 # dados normalizados
-    
+
+# totais
+t_deg = total2d(deg)
+t_bet = total2d(bet)
+t_clo = total2d(clo)
+
 # zscores
-z_deg = zscore2d(deg)
-z_bet = zscore2d(bet)
-z_clo = zscore2d(clo)
+z_deg = zscore2d(deg, t_deg)
+z_bet = zscore2d(bet, t_bet)
+z_clo = zscore2d(clo, t_clo)
 
 # minMax
-mm_deg = minMax2d(deg)
-mm_bet = minMax2d(bet)
-mm_clo = minMax2d(clo)
+mm_deg = minMax2d(deg, t_deg)
+mm_bet = minMax2d(bet, t_bet)
+mm_clo = minMax2d(clo, t_clo)
+del t_deg
+del t_bet
+del t_clo
 
 # sqrt
 sqrt_deg = sqrt2d(deg)
@@ -133,9 +146,9 @@ vertices = []
 for i in range (0, 900, 30):
     vertices.append(i)
 
-# dimensoes para a figura
-X = 35
-Y = 15
+# dimensoes para a figura (polegadas)
+X = 17.535433
+Y = 8.26772
 
 ''' plot robust '''
 
@@ -149,7 +162,7 @@ plt.ylabel("Meses")
 plt.xlabel("Vértices (total = 900)")
 plt.grid()
 imagem = mapa.get_figure()
-imagem.savefig("heatmaps/robust/heatmap_degree_robust.png", dpi = 600, bbox_inches='tight')
+imagem.savefig("heatmaps/robust/heatmap_degree_robust.png", dpi = 300, bbox_inches='tight')
 plt.close()
 
 # betweenness heatmap
@@ -162,7 +175,7 @@ plt.ylabel("Meses")
 plt.xlabel("Vértices (total = 900)")
 plt.grid()
 imagem = mapa.get_figure()
-imagem.savefig("heatmaps/robust/heatmap_betweenness_robust.png", dpi = 600, bbox_inches='tight')
+imagem.savefig("heatmaps/robust/heatmap_betweenness_robust.png", dpi = 300, bbox_inches='tight')
 plt.close()
 
 # closeness heatmap
@@ -175,7 +188,7 @@ plt.ylabel("Meses")
 plt.xlabel("Vértices (total = 900)")
 plt.grid()
 imagem = mapa.get_figure()
-imagem.savefig("heatmaps/robust/heatmap_closeness_robust.png", dpi = 600, bbox_inches='tight')
+imagem.savefig("heatmaps/robust/heatmap_closeness_robust.png", dpi = 300, bbox_inches='tight')
 plt.close()
 
 print('robust')
@@ -192,7 +205,7 @@ plt.ylabel("Meses")
 plt.xlabel("Vértices (total = 900)")
 plt.grid()
 imagem = mapa.get_figure()
-imagem.savefig("heatmaps/semNormalizacao/heatmap_degree.png", dpi = 600, bbox_inches='tight')
+imagem.savefig("heatmaps/semNormalizacao/heatmap_degree.png", dpi = 300, bbox_inches='tight')
 plt.close()
 del deg
 
@@ -206,7 +219,7 @@ plt.ylabel("Meses")
 plt.xlabel("Vértices (total = 900)")
 plt.grid()
 imagem = mapa.get_figure()
-imagem.savefig("heatmaps/semNormalizacao/heatmap_betweenness.png", dpi = 600, bbox_inches='tight')
+imagem.savefig("heatmaps/semNormalizacao/heatmap_betweenness.png", dpi = 300, bbox_inches='tight')
 plt.close()
 del bet
 
@@ -220,7 +233,7 @@ plt.ylabel("Meses")
 plt.xlabel("Vértices (total = 900)")
 plt.grid()
 imagem = mapa.get_figure()
-imagem.savefig("heatmaps/semNormalizacao/heatmap_closeness.png", dpi = 600, bbox_inches='tight')
+imagem.savefig("heatmaps/semNormalizacao/heatmap_closeness.png", dpi = 300, bbox_inches='tight')
 plt.close()
 del clo
 
@@ -238,7 +251,7 @@ plt.ylabel("Meses")
 plt.xlabel("Vértices (total = 900)")
 plt.grid()
 imagem = mapa.get_figure()
-imagem.savefig("heatmaps/zscore/heatmap_degree_zscore.png", dpi = 600, bbox_inches='tight')
+imagem.savefig("heatmaps/zscore/heatmap_degree_zscore.png", dpi = 300, bbox_inches='tight')
 plt.close()
 del z_deg
 
@@ -252,7 +265,7 @@ plt.ylabel("Meses")
 plt.xlabel("Vértices (total = 900)")
 plt.grid()
 imagem = mapa.get_figure()
-imagem.savefig("heatmaps/zscore/heatmap_betweenness_zscore.png", dpi = 600, bbox_inches='tight')
+imagem.savefig("heatmaps/zscore/heatmap_betweenness_zscore.png", dpi = 300, bbox_inches='tight')
 plt.close()
 del z_bet
 
@@ -266,7 +279,7 @@ plt.ylabel("Meses")
 plt.xlabel("Vértices (total = 900)")
 plt.grid()
 imagem = mapa.get_figure()
-imagem.savefig("heatmaps/zscore/heatmap_closeness_zscore.png", dpi = 600, bbox_inches='tight')
+imagem.savefig("heatmaps/zscore/heatmap_closeness_zscore.png", dpi = 300, bbox_inches='tight')
 plt.close()
 del z_clo
 
@@ -284,7 +297,7 @@ plt.ylabel("Meses")
 plt.xlabel("Vértices (total = 900)")
 plt.grid()
 imagem = mapa.get_figure()
-imagem.savefig("heatmaps/minmax/heatmap_degree_minmax.png", dpi = 600, bbox_inches='tight')
+imagem.savefig("heatmaps/minmax/heatmap_degree_minmax.png", dpi = 300, bbox_inches='tight')
 plt.close()
 del mm_deg
 
@@ -298,7 +311,7 @@ plt.ylabel("Meses")
 plt.xlabel("Vértices (total = 900)")
 plt.grid()
 imagem = mapa.get_figure()
-imagem.savefig("heatmaps/minmax/heatmap_betweenness_minmax.png", dpi = 600, bbox_inches='tight')
+imagem.savefig("heatmaps/minmax/heatmap_betweenness_minmax.png", dpi = 300, bbox_inches='tight')
 plt.close()
 del mm_bet
 
@@ -312,7 +325,7 @@ plt.ylabel("Meses")
 plt.xlabel("Vértices (total = 900)")
 plt.grid()
 imagem = mapa.get_figure()
-imagem.savefig("heatmaps/minmax/heatmap_closeness_minmax.png", dpi = 600, bbox_inches='tight')
+imagem.savefig("heatmaps/minmax/heatmap_closeness_minmax.png", dpi = 300, bbox_inches='tight')
 plt.close()
 del mm_clo
 
@@ -330,7 +343,7 @@ plt.ylabel("Meses")
 plt.xlabel("Vértices (total = 900)")
 plt.grid()
 imagem = mapa.get_figure()
-imagem.savefig("heatmaps/sqrt/heatmap_degree_sqrt.png", dpi = 600, bbox_inches='tight')
+imagem.savefig("heatmaps/sqrt/heatmap_degree_sqrt.png", dpi = 300, bbox_inches='tight')
 plt.close()
 del sqrt_deg
 
@@ -344,7 +357,7 @@ plt.ylabel("Meses")
 plt.xlabel("Vértices (total = 900)")
 plt.grid()
 imagem = mapa.get_figure()
-imagem.savefig("heatmaps/sqrt/heatmap_betweenness_sqrt.png", dpi = 600, bbox_inches='tight')
+imagem.savefig("heatmaps/sqrt/heatmap_betweenness_sqrt.png", dpi = 300, bbox_inches='tight')
 plt.close()
 del sqrt_bet
 
@@ -358,7 +371,7 @@ plt.ylabel("Meses")
 plt.xlabel("Vértices (total = 900)")
 imagem = mapa.get_figure()
 plt.grid()
-imagem.savefig("heatmaps/sqrt/heatmap_closeness_sqrt.png", dpi = 600, bbox_inches='tight')
+imagem.savefig("heatmaps/sqrt/heatmap_closeness_sqrt.png", dpi = 300, bbox_inches='tight')
 plt.close()
 del sqrt_clo
 
@@ -376,7 +389,7 @@ plt.ylabel("Meses")
 plt.xlabel("Vértices (total = 900)")
 plt.grid()
 imagem = mapa.get_figure()
-imagem.savefig("heatmaps/log/heatmap_degree_log.png", dpi = 600, bbox_inches='tight')
+imagem.savefig("heatmaps/log/heatmap_degree_log.png", dpi = 300, bbox_inches='tight')
 plt.close()
 del log_deg
 
@@ -390,7 +403,7 @@ plt.ylabel("Meses")
 plt.xlabel("Vértices (total = 900)")
 plt.grid()
 imagem = mapa.get_figure()
-imagem.savefig("heatmaps/log/heatmap_betweenness_log.png", dpi = 600, bbox_inches='tight')
+imagem.savefig("heatmaps/log/heatmap_betweenness_log.png", dpi = 300, bbox_inches='tight')
 plt.close()
 del log_bet
 
@@ -404,7 +417,7 @@ plt.ylabel("Meses")
 plt.xlabel("Vértices (total = 900)")
 plt.grid()
 imagem = mapa.get_figure()
-imagem.savefig("heatmaps/log/heatmap_closeness_log.png", dpi = 600, bbox_inches='tight')
+imagem.savefig("heatmaps/log/heatmap_closeness_log.png", dpi = 300, bbox_inches='tight')
 plt.close()
 del log_clo
 

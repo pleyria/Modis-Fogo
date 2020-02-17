@@ -81,7 +81,7 @@ for index_label, row_series in eventos.iterrows():
 nomesVertices = []
 for i in range(n):
     for j in range(n):
-        nome = str(i) + ',' + str(j)
+        nome = str(j) + ',' + str(i)
         nomesVertices.append(nome)
 
 # listas com datas e celulas dos eventos
@@ -109,6 +109,7 @@ for i in range(1, N): # comeca no segundo evento
             del g
             g = Graph(n*n)
             g.vs['name'] = nomesVertices
+			continue
     if celulas[i] != celulaAnterior:
         g.add_edge(celulas[i], celulaAnterior) # cria a aresta
     celulaAnterior = celulas[i]
