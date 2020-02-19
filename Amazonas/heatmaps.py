@@ -85,8 +85,12 @@ def log2d(v):
                 i[j] = math.log10(i[j])
     return V
 
+# diretorio para resultados e dados
+rd = os.path.dirname(os.path.dirname(os.getcwd()))
+rd = rd + '/Resultados e Dados/Amazonas'
+
 # lista com os nomes dos grafos
-f = os.listdir("grafosMes")
+f = os.listdir(rd + "/grafosMes")
 # ordena os nomes cronologicamente
 f = ordenaNomesArquivos(f)
 
@@ -98,7 +102,7 @@ clo = []
 # obtencao dos dados dos grafos
 for arquivo in f:
     # abre o grafo mensal
-    g = Graph.Read_GML("grafosMes/" + arquivo)
+    g = Graph.Read_GML(rd + "/grafosMes/" + arquivo)
     # obtem as informacoes de todos os vertices
     deg.append(g.degree())
     bet.append(g.betweenness())
@@ -162,7 +166,7 @@ plt.ylabel("Meses")
 plt.xlabel("Vértices (total = 900)")
 plt.grid()
 imagem = mapa.get_figure()
-imagem.savefig("heatmaps/robust/heatmap_degree_robust.png", dpi = 300, bbox_inches='tight')
+imagem.savefig(rd + "/heatmaps/robust/heatmap_degree_robust.png", dpi = 300, bbox_inches='tight')
 plt.close()
 
 # betweenness heatmap
@@ -175,7 +179,7 @@ plt.ylabel("Meses")
 plt.xlabel("Vértices (total = 900)")
 plt.grid()
 imagem = mapa.get_figure()
-imagem.savefig("heatmaps/robust/heatmap_betweenness_robust.png", dpi = 300, bbox_inches='tight')
+imagem.savefig(rd + "/heatmaps/robust/heatmap_betweenness_robust.png", dpi = 300, bbox_inches='tight')
 plt.close()
 
 # closeness heatmap
@@ -188,7 +192,7 @@ plt.ylabel("Meses")
 plt.xlabel("Vértices (total = 900)")
 plt.grid()
 imagem = mapa.get_figure()
-imagem.savefig("heatmaps/robust/heatmap_closeness_robust.png", dpi = 300, bbox_inches='tight')
+imagem.savefig(rd + "/heatmaps/robust/heatmap_closeness_robust.png", dpi = 300, bbox_inches='tight')
 plt.close()
 
 print('robust')
@@ -205,7 +209,7 @@ plt.ylabel("Meses")
 plt.xlabel("Vértices (total = 900)")
 plt.grid()
 imagem = mapa.get_figure()
-imagem.savefig("heatmaps/semNormalizacao/heatmap_degree.png", dpi = 300, bbox_inches='tight')
+imagem.savefig(rd + "/heatmaps/semNormalizacao/heatmap_degree.png", dpi = 300, bbox_inches='tight')
 plt.close()
 del deg
 
@@ -219,7 +223,7 @@ plt.ylabel("Meses")
 plt.xlabel("Vértices (total = 900)")
 plt.grid()
 imagem = mapa.get_figure()
-imagem.savefig("heatmaps/semNormalizacao/heatmap_betweenness.png", dpi = 300, bbox_inches='tight')
+imagem.savefig(rd + "/heatmaps/semNormalizacao/heatmap_betweenness.png", dpi = 300, bbox_inches='tight')
 plt.close()
 del bet
 
@@ -233,7 +237,7 @@ plt.ylabel("Meses")
 plt.xlabel("Vértices (total = 900)")
 plt.grid()
 imagem = mapa.get_figure()
-imagem.savefig("heatmaps/semNormalizacao/heatmap_closeness.png", dpi = 300, bbox_inches='tight')
+imagem.savefig(rd + "/heatmaps/semNormalizacao/heatmap_closeness.png", dpi = 300, bbox_inches='tight')
 plt.close()
 del clo
 
@@ -251,7 +255,7 @@ plt.ylabel("Meses")
 plt.xlabel("Vértices (total = 900)")
 plt.grid()
 imagem = mapa.get_figure()
-imagem.savefig("heatmaps/zscore/heatmap_degree_zscore.png", dpi = 300, bbox_inches='tight')
+imagem.savefig(rd + "/heatmaps/zscore/heatmap_degree_zscore.png", dpi = 300, bbox_inches='tight')
 plt.close()
 del z_deg
 
@@ -265,7 +269,7 @@ plt.ylabel("Meses")
 plt.xlabel("Vértices (total = 900)")
 plt.grid()
 imagem = mapa.get_figure()
-imagem.savefig("heatmaps/zscore/heatmap_betweenness_zscore.png", dpi = 300, bbox_inches='tight')
+imagem.savefig(rd + "/heatmaps/zscore/heatmap_betweenness_zscore.png", dpi = 300, bbox_inches='tight')
 plt.close()
 del z_bet
 
@@ -279,7 +283,7 @@ plt.ylabel("Meses")
 plt.xlabel("Vértices (total = 900)")
 plt.grid()
 imagem = mapa.get_figure()
-imagem.savefig("heatmaps/zscore/heatmap_closeness_zscore.png", dpi = 300, bbox_inches='tight')
+imagem.savefig(rd + "/heatmaps/zscore/heatmap_closeness_zscore.png", dpi = 300, bbox_inches='tight')
 plt.close()
 del z_clo
 
@@ -297,7 +301,7 @@ plt.ylabel("Meses")
 plt.xlabel("Vértices (total = 900)")
 plt.grid()
 imagem = mapa.get_figure()
-imagem.savefig("heatmaps/minmax/heatmap_degree_minmax.png", dpi = 300, bbox_inches='tight')
+imagem.savefig(rd + "/heatmaps/minmax/heatmap_degree_minmax.png", dpi = 300, bbox_inches='tight')
 plt.close()
 del mm_deg
 
@@ -311,7 +315,7 @@ plt.ylabel("Meses")
 plt.xlabel("Vértices (total = 900)")
 plt.grid()
 imagem = mapa.get_figure()
-imagem.savefig("heatmaps/minmax/heatmap_betweenness_minmax.png", dpi = 300, bbox_inches='tight')
+imagem.savefig(rd + "/heatmaps/minmax/heatmap_betweenness_minmax.png", dpi = 300, bbox_inches='tight')
 plt.close()
 del mm_bet
 
@@ -325,7 +329,7 @@ plt.ylabel("Meses")
 plt.xlabel("Vértices (total = 900)")
 plt.grid()
 imagem = mapa.get_figure()
-imagem.savefig("heatmaps/minmax/heatmap_closeness_minmax.png", dpi = 300, bbox_inches='tight')
+imagem.savefig(rd + "/heatmaps/minmax/heatmap_closeness_minmax.png", dpi = 300, bbox_inches='tight')
 plt.close()
 del mm_clo
 
@@ -343,7 +347,7 @@ plt.ylabel("Meses")
 plt.xlabel("Vértices (total = 900)")
 plt.grid()
 imagem = mapa.get_figure()
-imagem.savefig("heatmaps/sqrt/heatmap_degree_sqrt.png", dpi = 300, bbox_inches='tight')
+imagem.savefig(rd + "/heatmaps/sqrt/heatmap_degree_sqrt.png", dpi = 300, bbox_inches='tight')
 plt.close()
 del sqrt_deg
 
@@ -357,7 +361,7 @@ plt.ylabel("Meses")
 plt.xlabel("Vértices (total = 900)")
 plt.grid()
 imagem = mapa.get_figure()
-imagem.savefig("heatmaps/sqrt/heatmap_betweenness_sqrt.png", dpi = 300, bbox_inches='tight')
+imagem.savefig(rd + "/heatmaps/sqrt/heatmap_betweenness_sqrt.png", dpi = 300, bbox_inches='tight')
 plt.close()
 del sqrt_bet
 
@@ -371,7 +375,7 @@ plt.ylabel("Meses")
 plt.xlabel("Vértices (total = 900)")
 imagem = mapa.get_figure()
 plt.grid()
-imagem.savefig("heatmaps/sqrt/heatmap_closeness_sqrt.png", dpi = 300, bbox_inches='tight')
+imagem.savefig(rd + "/heatmaps/sqrt/heatmap_closeness_sqrt.png", dpi = 300, bbox_inches='tight')
 plt.close()
 del sqrt_clo
 
@@ -389,7 +393,7 @@ plt.ylabel("Meses")
 plt.xlabel("Vértices (total = 900)")
 plt.grid()
 imagem = mapa.get_figure()
-imagem.savefig("heatmaps/log/heatmap_degree_log.png", dpi = 300, bbox_inches='tight')
+imagem.savefig(rd + "/heatmaps/log/heatmap_degree_log.png", dpi = 300, bbox_inches='tight')
 plt.close()
 del log_deg
 
@@ -403,7 +407,7 @@ plt.ylabel("Meses")
 plt.xlabel("Vértices (total = 900)")
 plt.grid()
 imagem = mapa.get_figure()
-imagem.savefig("heatmaps/log/heatmap_betweenness_log.png", dpi = 300, bbox_inches='tight')
+imagem.savefig(rd + "/heatmaps/log/heatmap_betweenness_log.png", dpi = 300, bbox_inches='tight')
 plt.close()
 del log_bet
 
@@ -417,7 +421,7 @@ plt.ylabel("Meses")
 plt.xlabel("Vértices (total = 900)")
 plt.grid()
 imagem = mapa.get_figure()
-imagem.savefig("heatmaps/log/heatmap_closeness_log.png", dpi = 300, bbox_inches='tight')
+imagem.savefig(rd + "/heatmaps/log/heatmap_closeness_log.png", dpi = 300, bbox_inches='tight')
 plt.close()
 del log_clo
 

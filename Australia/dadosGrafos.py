@@ -62,7 +62,11 @@ dados = {
 
 ''' leitura dos arquivos e criacao do dataframe '''
 
-f = os.listdir("grafosMes") # lista com os nomes dos grafos
+# diretorio para resultados e dados
+rd = os.path.dirname(os.path.dirname(os.getcwd()))
+rd = rd + '/Resultados e Dados/Australia'
+
+f = os.listdir(rd + "/grafosMes") # lista com os nomes dos grafos
 f = ordenaNomesArquivos(f) # ordena os nomes cronologicamente
 
 for arquivo in f: # percorre todos os grafos mensais em ordem
@@ -75,7 +79,7 @@ for arquivo in f: # percorre todos os grafos mensais em ordem
     dados['mes'].append(M) # guarda mes do grafo
     
     # abre o grafo
-    g = Graph.Read_GML("grafosMes/" + arquivo)
+    g = Graph.Read_GML(rd + "/grafosMes/" + arquivo)
     
     # calculo e armazenamento do grau medio
     listaDado = g.degree()
@@ -115,7 +119,7 @@ dadosGrafos = pd.DataFrame(dados)
 del dados
 
 # salva um arquivo com o dataframe
-dadosGrafos.to_csv("csv/dadosGrafosMensais.csv")
+dadosGrafos.to_csv(rd + "/csv/dadosGrafosMensais.csv")
 
 ''' plots dos graficos '''
 
@@ -134,25 +138,23 @@ for a in range (2003, 2020):
 	# plot degree
 	plt.plot(m, mean_degree)
 	plt.title("mean degree " + ano)
-	plt.savefig("GraficosAno/" + ano + "/mean_degree", dpi = 300)
+	plt.savefig(rd + "/GraficosAno/" + ano + "/mean_degree", dpi = 300)
 	plt.close()
 	
 	# plot betweenness
 	plt.plot(m, mean_betweenness)
 	plt.title("mean betweenness " + ano)
-	plt.savefig("GraficosAno/" + ano + "/mean_betweenness", dpi = 300)
+	plt.savefig(rd + "/GraficosAno/" + ano + "/mean_betweenness", dpi = 300)
 	plt.close()
 	
 	# plot closeness
 	plt.plot(m, mean_closeness)
 	plt.title("mean closeness " + ano)
-	plt.savefig("GraficosAno/" + ano + "/mean_closenness", dpi = 300)
+	plt.savefig(rd + "/GraficosAno/" + ano + "/mean_closenness", dpi = 300)
 	plt.close()
 	
 	# plot entropy
 	plt.plot(m, entropy)
 	plt.title("entropy " + ano)
-	plt.savefig("GraficosAno/" + ano + "/entropy", dpi = 300)
+	plt.savefig(rd + "/GraficosAno/" + ano + "/entropy", dpi = 300)
 	plt.close()
-
-

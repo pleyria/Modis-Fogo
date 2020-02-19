@@ -1,21 +1,23 @@
 # -*- coding: utf-8 -*-
-
+import os
 import math
-import numpy as np
 import pandas as pd
-from igraph import *
 from igraph import Graph
+
+# diretorio para resultados e dados
+rd = os.path.dirname(os.path.dirname(os.getcwd()))
+rd = rd + '/Resultados e Dados/Amazonas'
 
 ''' leitura dos arquivos '''
 
 # fire_nrt_M6_94041.csv contem dados de 2019-10-01 ate 2019-12-01
-df = pd.read_csv(r'csv\fire_archive_M6_94041.csv')
+df = pd.read_csv(rd + r'/csv/fire_archive_M6_94041.csv')
 # eventos1 contem apenas os dados com confiabilidade maior ou igual a 75%
 eventos1 = df.loc[df['confidence'] >= 75]
 del df
 
 # fire_archive_M6_94041.csv contem dados de 2003-01-01 ate 2019-09-30
-df = pd.read_csv(r'csv\fire_nrt_M6_94041.csv')
+df = pd.read_csv(rd + r'csv/fire_nrt_M6_94041.csv')
 # eventos2 contem apenas os dados com confiabilidade maior ou igual a 75%
 eventos2 = df.loc[df['confidence'] >= 75]
 del df
@@ -103,17 +105,17 @@ for i in range(1, N): # comeca no segundo evento
         dataAtual = datas[i]
         numDias += 1 # aumenta um na contagem de dias
         if numDias == 30: # salva o grafo apos 30 dias
-            g.write_gml("grafos\grafo" + str(numGrafo) + ".gml")
+            g.write_gml(rd + "/grafos/grafo" + str(numGrafo) + ".gml")
             numGrafo += 1
             numDias = 1
             del g
             g = Graph(n*n)
             g.vs['name'] = nomesVertices
-			continue
+            continue
     if celulas[i] != celulaAnterior:
         g.add_edge(celulas[i], celulaAnterior) # cria a aresta
     celulaAnterior = celulas[i]
     if i == N-1: # salva o ultimo grafo
-        g.write_gml("grafos\grafo" + str(numGrafo) + ".gml")
+        g.write_gml(rd + "/grafos/grafo" + str(numGrafo) + ".gml")
         del g
 

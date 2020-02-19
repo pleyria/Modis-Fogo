@@ -1,13 +1,18 @@
 # -*- coding: utf-8 -*-
 ''' Neste codigo, sao criadas redes para cada mes '''
+import os
 import math
 import pandas as pd
 from igraph import Graph
 
+# diretorio para resultados e dados
+rd = os.path.dirname(os.path.dirname(os.getcwd()))
+rd = rd + '/Resultados e Dados/Australia'
+
 ''' leitura dos arquivos '''
 
 # fire_archive_M6_105701.csv contem dados de 2003-01-01 ate 2019-12-01
-df = pd.read_csv(r'csv/fire_archive_M6_105701.csv')
+df = pd.read_csv(rd + r'/csv/fire_archive_M6_105701.csv')
 # eventos contem apenas os dados com confiabilidade maior ou igual a 75%
 ev = df.loc[df['confidence'] >= 75]
 del df
@@ -156,7 +161,7 @@ for i in range(1, N): # comeca no segundo evento
         # guarda algumas informacoes sobre o grafo
         g.vs['longitude'] = longitudeCentro
         g.vs['latitude'] = latitudeCentro
-        g.write_gml(r'grafosMes/grafo' + str(numGrafo) + '_' + mes(dataGrafo[1]) + '-' + dataGrafo[0] + '.gml')
+        g.write_gml(rd + r'/grafosMes/grafo' + str(numGrafo) + '_' + mes(dataGrafo[1]) + '-' + dataGrafo[0] + '.gml')
         numGrafo += 1
         del g
         dataGrafo = dataAtual
@@ -168,7 +173,7 @@ for i in range(1, N): # comeca no segundo evento
     if i == N-1:
         g.vs['longitude'] = longitudeCentro
         g.vs['latitude'] = latitudeCentro
-        g.write_gml(r'grafosMes/grafo' + str(numGrafo) + '_' + mes(dataGrafo[1]) + '-'  + dataGrafo[0] + '.gml')
+        g.write_gml(rd + r'/grafosMes/grafo' + str(numGrafo) + '_' + mes(dataGrafo[1]) + '-'  + dataGrafo[0] + '.gml')
         del g
         
 ''' criacao do dataframe com coordenadas de cada vertice '''
@@ -183,4 +188,4 @@ coordenadasVertice = pd.DataFrame(cv)
 del cv
 
 # salva um arquivo com o dataframe
-coordenadasVertice.to_csv(r'csv/coordenadasVertice.csv')
+coordenadasVertice.to_csv(rd + r'/csv/coordenadasVertice.csv')

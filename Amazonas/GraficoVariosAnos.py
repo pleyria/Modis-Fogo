@@ -1,10 +1,15 @@
 # -*- coding: utf-8 -*-
+import os
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 
+# diretorio para resultados e dados
+rd = os.path.dirname(os.path.dirname(os.getcwd()))
+rd = rd + '/Resultados e Dados/Amazonas'
+
 # leitura do datraframe com dados dos grafos mensais
-df = pd.read_csv(r'csv/dadosGrafosMensais.csv', index_col = 0)
+df = pd.read_csv(rd + r'/csv/dadosGrafosMensais.csv', index_col = 0)
 
 # plot dos graficos
 
@@ -37,7 +42,7 @@ plt.tick_params(
 )
 plt.rc('xtick', labelsize = 10)
 plt.grid()
-plt.savefig(r'Graficos2003-2019/4Medidas', dpi = 600, bbox_inches='tight')
+plt.savefig(rd + r'/Graficos2003-2019/4Medidas', dpi = 600, bbox_inches='tight')
 plt.close()
 
 # plot mean degree
@@ -53,7 +58,7 @@ plt.tick_params(
 plt.rc('xtick', labelsize = 10)
 plt.title("Mean Degree")
 plt.grid()
-plt.savefig(r'Graficos2003-2019/mean_degree', dpi = 600, bbox_inches='tight')
+plt.savefig(rd + r'/Graficos2003-2019/mean_degree', dpi = 600, bbox_inches='tight')
 plt.close()
 del mean_degree
 
@@ -70,7 +75,7 @@ plt.tick_params(
 plt.rc('xtick', labelsize = 10)
 plt.title("Mean Betweenness")
 plt.grid()
-plt.savefig(r'Graficos2003-2019/mean_betweenness', dpi = 600, bbox_inches='tight')
+plt.savefig(rd + r'/Graficos2003-2019/mean_betweenness', dpi = 600, bbox_inches='tight')
 plt.close()
 del mean_betweenness
 
@@ -87,7 +92,7 @@ plt.tick_params(
 plt.rc('xtick', labelsize = 10)
 plt.title("Mean Closeness")
 plt.grid()
-plt.savefig(r'Graficos2003-2019/mean_closeness', dpi = 600, bbox_inches='tight')
+plt.savefig(rd + r'/Graficos2003-2019/mean_closeness', dpi = 600, bbox_inches='tight')
 plt.close()
 del mean_closeness
 
@@ -104,7 +109,7 @@ plt.tick_params(
 plt.rc('xtick', labelsize = 10)
 plt.title("Entropy")
 plt.grid()
-plt.savefig(r'Graficos2003-2019/entropy', dpi = 600, bbox_inches='tight')
+plt.savefig(rd + r'/Graficos2003-2019/entropy', dpi = 600, bbox_inches='tight')
 plt.close()
 del entropy
 
@@ -121,7 +126,7 @@ plt.tick_params(
 plt.rc('xtick', labelsize = 10)
 plt.title("Vertices")
 plt.grid()
-plt.savefig(r'Graficos2003-2019/vertices', dpi = 600, bbox_inches='tight')
+plt.savefig(rd + r'/Graficos2003-2019/vertices', dpi = 600, bbox_inches='tight')
 plt.close()
 del vertices
 
@@ -138,6 +143,6 @@ plt.tick_params(
 plt.rc('xtick', labelsize = 10)
 plt.title("Arestas")
 plt.grid()
-plt.savefig(r'Graficos2003-2019/arestas', dpi = 600, bbox_inches='tight')
+plt.savefig(rd + r'/Graficos2003-2019/arestas', dpi = 600, bbox_inches='tight')
 plt.close()
 del arestas

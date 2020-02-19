@@ -1,19 +1,24 @@
 # -*- coding: utf-8 -*-
 ''' Neste codigo, sao criadas redes para cada mes '''
+import os
 import math
 import pandas as pd
 from igraph import Graph
 
+# diretorio para resultados e dados
+rd = os.path.dirname(os.path.dirname(os.getcwd()))
+rd = rd + '/Resultados e Dados/Amazonas'
+
 ''' leitura dos arquivos '''
 
 # fire_nrt_M6_94041.csv contem dados de 2019-10-01 ate 2019-12-01
-df = pd.read_csv(r'csv/fire_archive_M6_94041.csv')
+df = pd.read_csv(rd + r'/csv/fire_archive_M6_94041.csv')
 # eventos1 contem apenas os dados com confiabilidade maior ou igual a 75%
 eventos1 = df.loc[df['confidence'] >= 75]
 del df
 
 # fire_archive_M6_94041.csv contem dados de 2003-01-01 ate 2019-09-30
-df = pd.read_csv(r'csv/fire_nrt_M6_94041.csv')
+df = pd.read_csv(rd + r'/csv/fire_nrt_M6_94041.csv')
 # eventos2 contem apenas os dados com confiabilidade maior ou igual a 75%
 eventos2 = df.loc[df['confidence'] >= 75]
 del df
@@ -29,7 +34,7 @@ del eventos['brightness']
 del eventos['scan']
 del eventos['track']
 del eventos['acq_time']
-del eventos['setellite']
+del eventos['satellite']
 del eventos['version']
 del eventos['bright_t31']
 del eventos['frp']
@@ -156,7 +161,7 @@ for i in range(1, N): # comeca no segundo evento
 		# guarda algumas infromacoes sobre o grafo
 		g.vs['longitude'] = longitudeCentro
 		g.vs['latitude'] = latitudeCentro
-		g.write_gml('grafosMes/grafo' + str(numGrafo) + "_" + mes(dataGrafo[1]) + '-'  + dataGrafo[0] + '.gml')
+		g.write_gml(rd + '/grafosMes/grafo' + str(numGrafo) + "_" + mes(dataGrafo[1]) + '-'  + dataGrafo[0] + '.gml')
 		numGrafo += 1
 		del g
 		dataGrafo = dataAtual
@@ -168,7 +173,7 @@ for i in range(1, N): # comeca no segundo evento
 	if i == N-1:
 		g.vs['longitude'] = longitudeCentro
 		g.vs['latitude'] = latitudeCentro
-		g.write_gml('grafosMes/grafo' + str(numGrafo) + "_" + mes(dataGrafo[1]) + '-'  + dataGrafo[0] + '.gml')
+		g.write_gml(rd + '/grafosMes/grafo' + str(numGrafo) + "_" + mes(dataGrafo[1]) + '-'  + dataGrafo[0] + '.gml')
 		del g
 	
 ''' criacao do dataframe com coordenadas de cada vertice '''
@@ -183,4 +188,4 @@ coordenadasVertice = pd.DataFrame(cv)
 del cv
 
 # salva um arquivo com o dataframe
-coordenadasVertice.to_csv("csv/coordenadasVertice.csv")
+coordenadasVertice.to_csv(rd + "/csv/coordenadasVertice.csv")
