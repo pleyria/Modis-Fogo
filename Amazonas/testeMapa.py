@@ -5,10 +5,9 @@ import matplotlib.pyplot as plt
 from mpl_toolkits.basemap import Basemap
 
 # tamanho da imagem em polegadas
-largura = 11.69
-altura = 8.27
-plt.figure(figsize=(largura, altura))
-
+h = 11.69
+w = 8.27
+plt.figure(figsize=(h, w))
 
 # seleciona a area, resolucao e tipo de projecao
 mapa = Basemap(projection = 'cyl', resolution='i',
@@ -45,7 +44,7 @@ dados = grafo.degree()
 
 del grafo
 
-# transforma lista de dadps em uma matriz
+# transforma lista de dados em uma matriz
 dados = np.array(dados)
 dados = dados.reshape(a, b)
 
@@ -57,10 +56,16 @@ x = np.linspace(mapa.llcrnrlon, mapa.urcrnrlon, num = b)
 xx, yy = np.meshgrid(x, y)
 
 # plota os dados como cores
-mapa.pcolormesh(xx, yy, dados, cmap = 'OrRd', latlon=True,
+mapa.pcolormesh(xx, yy, dados, cmap = 'YlOrBr', latlon=True,
                 zorder = 2, alpha = 0.5)
 
+cbar = plt.colorbar(orientation='horizontal', shrink=0.625, aspect=20, fraction=0.2,pad=0.02)
+cbar.set_label('Grau', size = 12)
+
 # titulo do mapa
-plt.title('Graus dos vértices - Novembro 2006')
+plt.title('Novembro 2006', size = 15)
+
 plt.show()
+plt.close()
+
 
