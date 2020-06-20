@@ -25,11 +25,11 @@ f = os.listdir(rd + "/LatLong05/grafosMes")
 # ordena os nomes cronologicamente
 f = ordenaNomesArquivos(f)
 
-# filtra apenas os grafos de 2019 e 2018
+# filtra apenas os grafos do intervalo desejado
 s = []
 for i in f:
     sub = substringEntreChars(i, '-', '.')
-    if int(sub) >= 2018:
+    if int(sub) < 2018:
         s.append(i)
 f = s
 del s, i
