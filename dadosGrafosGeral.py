@@ -149,7 +149,7 @@ for arquivo in fAu: # percorre todos os grafos mensais em ordem
     dados['regiao'].append(1) # 1 -> Australia
     
     # abre o grafo
-    g = Graph.Read_GML(rdAm + "/grafosMes/" + arquivo)
+    g = Graph.Read_GML(rdAu + "/grafosMes/" + arquivo)
     
     # calculo e armazenamento do grau medio
     listaDado = g.degree() # listaDado contem os graus
