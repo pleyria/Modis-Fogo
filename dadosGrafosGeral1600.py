@@ -2,7 +2,9 @@
 ''' Neste codigo, sao criados arquivos csv
     com media e variancia de degree, media de betweenness,
     media de closeness, entropia, numero de vertices e arestas
-    para as redes mensais da amazonia e australia
+    para as redes mensais da amazonia e australia.
+    Porem a australia tem a area diminuida para ficar com o mesmo
+    numero de vertices da amazonia (1600 vertices).
 '''
 
 import os
@@ -135,6 +137,32 @@ for arquivo in fAm: # percorre todos os grafos mensais em ordem
     del g
 
 
+# informacoes sobre o grid da australia para selecionar a area menor
+# longitudes da area maior
+long_i_Au = 113
+long_f_Au = 154
+
+# latitudes da area maior
+lat_i_Au = -44
+lat_f_Au = -10
+
+# tamanho do grid
+alpha = beta = 0.5
+
+# coordenadas x da area menor
+cx_i = 14
+cx_f = 63
+
+# coordenadas y da area maior
+cy_i = 34
+cy_f = 65
+
+# cria lista de coordenadas a serem mantidas
+labelsToInclude = []
+for y in range(cy_i, cy_f + 1):
+    for x in range(cx_i, cx_f + 1):
+        labelsToInclude.append(str(x) + ',' + str(y))
+
 # obtencao dos dados da Australia
 for arquivo in fAu: # percorre todos os grafos mensais em ordem
     # guarda o ano do grafo
@@ -150,6 +178,13 @@ for arquivo in fAu: # percorre todos os grafos mensais em ordem
     
     # abre o grafo
     g = Graph.Read_GML(rdAu + "/LatLong05/grafosMes/" + arquivo)
+    
+    # procura os vertices que nao estao na area menor para deleta-los
+    verticesToDelete = []
+    for v in g.vs:
+        if v['name'] not in labelsToInclude:
+            verticesToDelete.append(v.index)
+    g.delete_vertices(verticesToDelete)
     
     # calculo e armazenamento do grau medio
     listaDado = g.degree() # listaDado contem os graus
@@ -194,4 +229,4 @@ dadosGrafos = pd.DataFrame(dados)
 del dados
 
 # salva um arquivo com o dataframe
-dadosGrafos.to_csv(rd + "/Resultados e Dados/dadosGrafos.csv")
+dadosGrafos.to_csv(rd + "/Resultados e Dados/dadosGrafos1600.csv")
