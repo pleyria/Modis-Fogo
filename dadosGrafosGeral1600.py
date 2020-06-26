@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
-''' Neste codigo, sao criados arquivos csv
+''' 
+    Neste codigo, sao criados arquivos csv
     com media e variancia de degree, media de betweenness,
     media de closeness, entropia, numero de vertices e arestas
     para as redes mensais da amazonia e australia.
