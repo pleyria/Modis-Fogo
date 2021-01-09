@@ -190,17 +190,22 @@ intervalos = clr.BoundaryNorm(boundaries=bounds, ncolors=256)
 normalizacao = clr.LogNorm(vmin=matriz.min(), vmax=matriz.max())
 
 # criacao do colormap com menor valor branco
+# pega a escala de vermelho ja pronta
 Reds = cm.get_cmap('Reds', 256)
+# extrai as cores em RGBA
 newcolors = Reds(np.linspace(0, 1, 256))
+# cria a cor branco com opacidade 1
 white = np.array([1, 1, 1, 1])
+# adiciona o branco como primeira cor da escala
 newcolors[0] = white
+# cria novo colormap
 newcmp = clr.ListedColormap(newcolors)
 
 # plota os dados como cores
 mapa.pcolormesh(xx, yy, matriz, cmap = newcmp, latlon=True, zorder=0,
                 norm=normalizacao)
 
-# escala de cores
+# escala de cores da legenda
 cbar = plt.colorbar(orientation='horizontal', shrink=0.9, aspect=20, fraction=0.2,pad=0.02)
 cbar.set_label('Fire counts', size = 14)
 
