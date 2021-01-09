@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 ''' Neste codigo, sao criadas redes para cada mes 
-    considerando grids com celulas de 0.5 lat e 
-    0.5 long
+    considerando grids com celulas de 0.5 lat e 0.5 long
 '''
 
 import os
@@ -10,13 +9,14 @@ import pandas as pd
 from igraph import Graph
 
 # diretorio para resultados e dados
-rd = os.path.dirname(os.path.dirname(os.getcwd()))
-rd = rd + '/Resultados e Dados/Australia'
+rd = os.path.dirname(os.path.dirname(os.path.dirname(os.getcwd())))
+rd = rd + '/Resultados e Dados/America_China_Asia/America'
 
 ''' leitura dos arquivos '''
 
-# fire_archive_M6_105701.csv contem dados de 2003-01-01 ate 2019-12-01
-df = pd.read_csv(rd + r'/csv/fire_archive_M6_105701.csv')
+# fire_archive_M6_135341.csv contem dados de 2003-01-01 ate 2019-12-01
+df = pd.read_csv(rd + r'/csv/fire_archive_M6_146856.csv')
+
 # eventos contem apenas os dados com confiabilidade maior ou igual a 75%
 ev = df.loc[df['confidence'] >= 75]
 del df
@@ -37,13 +37,13 @@ del eventos['frp']
 del eventos['daynight']
 del eventos['type']
 
-# latitude varia de -44 a -10
-lat_i = -44
-lat_f = -10
+# latitude varia de -31.9 a -13.4
+lat_i = 36.84
+lat_f = 51.25
 
-# longitude varia de 113 a 154
-long_i = 113
-long_f = 154
+# longitude varia de 125 a 145.1
+long_i = -123.8
+long_f = -103.81
 
 # alpha eh a altura da celula do grid (latitude)
 alpha = 0.5
@@ -169,7 +169,7 @@ for i in range(1, N): # comeca no segundo evento
         # guarda algumas informacoes sobre o grafo
         g.vs['longitude'] = longitudeCentro
         g.vs['latitude'] = latitudeCentro
-        g.write_gml(rd + r'/LatLong05/grafosMes/grafo' + str(numGrafo) + '_' + mes(dataGrafo[1]) + '-' + dataGrafo[0] + '.gml')
+        g.write_gml(rd + r'/grafosMes/grafo' + str(numGrafo) + '_' + mes(dataGrafo[1]) + '-' + dataGrafo[0] + '.gml')
         numGrafo += 1
         del g
         dataGrafo = dataAtual
@@ -181,8 +181,20 @@ for i in range(1, N): # comeca no segundo evento
     if i == N-1:
         g.vs['longitude'] = longitudeCentro
         g.vs['latitude'] = latitudeCentro
-        g.write_gml(rd + r'/LatLong05/grafosMes/grafo' + str(numGrafo) + '_' + mes(dataGrafo[1]) + '-' + dataGrafo[0] + '.gml')
+        g.write_gml(rd + r'/grafosMes/grafo' + str(numGrafo) + '_' + mes(dataGrafo[1]) + '-' + dataGrafo[0] + '.gml')
         del g
+    
+''' dezembro de 2019 nao tem nenhum evento, entao cria um
+grafo sem arestas para este mes '''
+g = Graph(a*b)
+g.vs['name'] = nomesVertices
+g.vs['longitude'] = longitudeCentro
+g.vs['latitude'] = latitudeCentro
+numGrafo = numGrafo + 1
+dataGrafo[1] = '12'
+g.write_gml(rd + r'/grafosMes/grafo' + str(numGrafo) + '_' + mes(dataGrafo[1]) + '-' + dataGrafo[0] + '.gml')
+del g
+
 
 ''' criacao do dataframe com coordenadas de cada vertice '''
 cv = {
@@ -196,4 +208,4 @@ coordenadasVertice = pd.DataFrame(cv)
 del cv
 
 # salva um arquivo com o dataframe
-coordenadasVertice.to_csv(rd + r'/LatLong05/csv/coordenadasVertice.csv')
+coordenadasVertice.to_csv(rd + r'/csv/coordenadasVertice.csv')

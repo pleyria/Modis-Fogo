@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 ''' Neste codigo, sao criadas redes para cada mes 
-    considerando grids com celulas de 0.5 lat e 
-    0.5 long
+    considerando grids com celulas de 0.5 lat e 0.5 long
 '''
 
 import os
@@ -10,13 +9,14 @@ import pandas as pd
 from igraph import Graph
 
 # diretorio para resultados e dados
-rd = os.path.dirname(os.path.dirname(os.getcwd()))
-rd = rd + '/Resultados e Dados/Australia'
+rd = os.path.dirname(os.path.dirname(os.path.dirname(os.getcwd())))
+rd = rd + '/Resultados e Dados/America_China_Asia/Asia'
 
 ''' leitura dos arquivos '''
 
-# fire_archive_M6_105701.csv contem dados de 2003-01-01 ate 2019-12-01
-df = pd.read_csv(rd + r'/csv/fire_archive_M6_105701.csv')
+# fire_archive_M6_135341.csv contem dados de 2003-01-01 ate 2019-12-01
+df = pd.read_csv(rd + r'/csv/fire_archive_M6_146858.csv')
+
 # eventos contem apenas os dados com confiabilidade maior ou igual a 75%
 ev = df.loc[df['confidence'] >= 75]
 del df
@@ -37,13 +37,13 @@ del eventos['frp']
 del eventos['daynight']
 del eventos['type']
 
-# latitude varia de -44 a -10
-lat_i = -44
-lat_f = -10
+# latitude varia de -31.9 a -13.4
+lat_i = 46.9
+lat_f = 59
 
-# longitude varia de 113 a 154
-long_i = 113
-long_f = 154
+# longitude varia de 125 a 145.1
+long_i = 57
+long_f = 77
 
 # alpha eh a altura da celula do grid (latitude)
 alpha = 0.5
@@ -133,6 +133,47 @@ datas = [i for i in eventos['acq_date']]
 celulas = [i for i in eventos['celula']]
 del eventos
 
+# ajusta a lista de datas para nao pular nenhum dia 
+# mesmo se nao tiver eventos
+# foi uma porra pra fazer isso, mas ta funcionando
+T = len(datas)
+i = 0
+while i < T:
+    print(i)
+    if i < T-1:
+        dataAtual = datas[i].split('-')
+        proximaData = datas[i+1].split('-')
+        if dataAtual[1] != proximaData[1]:
+            if int(dataAtual[1]) % 12 != int(proximaData[1]) - 1:
+                if dataAtual[1] == '12':
+                    ano = int(dataAtual[0])
+                    ano = ano + 1
+                    mes = '01'
+                else:
+                    ano = int(dataAtual[0])
+                    mes = int(dataAtual[1])
+                    if mes < 9:
+                        mesP = mes + 1
+                        mes = '0' + str(mesP)
+                    else:
+                        mesP = mes + 1
+                        mes = str(mesP)
+                datas.insert(i+1, str(ano) + '-' + mes + '-01')
+                celulas.insert(i+1, '-1,-1')
+                T = T + 1
+    else:
+        if datas[i] != '2019-12-01':
+            dataAtual = datas[i].split('-')
+            mes = int(dataAtual[1])
+            for j in range(mes+1, 13):
+                if j <= 9:
+                    datas.append('2019-' + '0' + str(j) + '-01')
+                    celulas.append('-1,-1')
+                else:
+                    datas.append('2019-' + str(j) + '-01')
+                    celulas.append('-1,-1')
+    i = i + 1
+
 # dicionario com nome dos meses
 meses = {
     "01" : "Jan",
@@ -169,21 +210,21 @@ for i in range(1, N): # comeca no segundo evento
         # guarda algumas informacoes sobre o grafo
         g.vs['longitude'] = longitudeCentro
         g.vs['latitude'] = latitudeCentro
-        g.write_gml(rd + r'/LatLong05/grafosMes/grafo' + str(numGrafo) + '_' + mes(dataGrafo[1]) + '-' + dataGrafo[0] + '.gml')
+        g.write_gml(rd + r'/grafosMes/grafo' + str(numGrafo) + '_' + mes(dataGrafo[1]) + '-' + dataGrafo[0] + '.gml')
         numGrafo += 1
         del g
         dataGrafo = dataAtual
         g = Graph(a*b)
         g.vs['name'] = nomesVertices
-    if celulas[i] != celulaAnterior and not g.are_connected(celulas[i], celulaAnterior):
+    if celulas[i] != celulaAnterior and celulaAnterior != '-1,-1' and celulas[i] != '-1,-1' and not g.are_connected(celulas[i], celulaAnterior):
         g.add_edge(celulas[i], celulaAnterior) # cria aresta
     celulaAnterior = celulas[i]
     if i == N-1:
         g.vs['longitude'] = longitudeCentro
         g.vs['latitude'] = latitudeCentro
-        g.write_gml(rd + r'/LatLong05/grafosMes/grafo' + str(numGrafo) + '_' + mes(dataGrafo[1]) + '-' + dataGrafo[0] + '.gml')
+        g.write_gml(rd + r'/grafosMes/grafo' + str(numGrafo) + '_' + mes(dataGrafo[1]) + '-' + dataGrafo[0] + '.gml')
         del g
-
+        
 ''' criacao do dataframe com coordenadas de cada vertice '''
 cv = {
       'vertice' : nomesVertices,
@@ -196,4 +237,4 @@ coordenadasVertice = pd.DataFrame(cv)
 del cv
 
 # salva um arquivo com o dataframe
-coordenadasVertice.to_csv(rd + r'/LatLong05/csv/coordenadasVertice.csv')
+coordenadasVertice.to_csv(rd + r'/csv/coordenadasVertice.csv')
