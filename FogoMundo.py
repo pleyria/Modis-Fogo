@@ -170,22 +170,6 @@ mapa.plot(x_Asia, y_Asia, latlon=True, marker=None,
 del x_Africa, y_Africa, x_Australia, y_Australia, x_Amazonia, y_Amazonia
 del x_America, y_America, x_China, y_China, x_Asia, y_Asia
 
-'''
-ESSA PARADA DE DIVIDIR EM INTERVALOS NAO DEU CERTO, MAS VOU DEIXAR 
-AQUI DE RECORDACAO
-
-# divide os dados em intervalos
-# numero de intervalos pela formula de Sturges
-C = 1 + 1.33*math.log10(a*b)
-C = int(round(C))
-
-# divisao dos intervalos
-bounds = np.linspace(matriz.min(), matriz.max(), C+1)
-
-# normalizacao por intervalos para o plot
-intervalos = clr.BoundaryNorm(boundaries=bounds, ncolors=256)
-'''
-
 # normalizacao por logaritmo
 normalizacao = clr.LogNorm(vmin=matriz.min(), vmax=matriz.max())
 
